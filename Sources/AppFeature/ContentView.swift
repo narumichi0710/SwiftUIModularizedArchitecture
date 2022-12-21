@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
+public struct ContentView: View {
+    public init() {}
+
+    public var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
@@ -19,8 +21,10 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+public struct ContentView_Previews: PreviewProvider {
+    public init() {}
+
+    public static var previews: some View {
         ContentView()
     }
 }
