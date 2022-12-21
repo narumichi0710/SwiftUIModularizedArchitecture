@@ -1,13 +1,13 @@
 //
-//  SwiftUIModularizedArchitectureUITestsLaunchTests.swift
-//  SwiftUIModularizedArchitectureUITests
+//  AppUITestsLaunchTests.swift
+//  AppUITests
 //
 //  Created by Narumichi Kubo on 2022/12/21.
 //
 
 import XCTest
 
-final class SwiftUIModularizedArchitectureUITestsLaunchTests: XCTestCase {
+final class AppUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

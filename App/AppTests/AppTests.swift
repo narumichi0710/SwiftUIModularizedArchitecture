@@ -1,14 +1,14 @@
 //
-//  SwiftUIModularizedArchitectureTests.swift
-//  SwiftUIModularizedArchitectureTests
+//  AppTests.swift
+//  AppTests
 //
 //  Created by Narumichi Kubo on 2022/12/21.
 //
 
 import XCTest
-@testable import SwiftUIModularizedArchitecture
+@testable import App
 
-final class SwiftUIModularizedArchitectureTests: XCTestCase {
+final class AppTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
