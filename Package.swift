@@ -12,6 +12,8 @@ let package = Package(
         .library(name: "Search", targets: ["Search"]),
         .library(name: "Explore", targets: ["Explore"]),
         .library(name: "Setting", targets: ["Setting"]),
+        .library(name: "Setting", targets: ["Setting"]),
+        .library(name: "Tutorial", targets: ["Tutorial"]),
         .library(name: "ApiClient", targets: ["ApiClient"]),
     ],
     dependencies: [
@@ -19,10 +21,12 @@ let package = Package(
     targets: [
         .target(name: "AppFeature", dependencies: [
             "ApiClient",
+            "Tutorial",
             "Search",
             "Explore",
             "Setting"
         ]),
+        .target(name: "Tutorial", dependencies: []),
         .target(name: "Search", dependencies: []),
         .target(name: "Explore", dependencies: []),
         .target(name: "Setting", dependencies: []),
