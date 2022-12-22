@@ -8,8 +8,8 @@
 import SwiftUI
 
 public struct SearchRootView: View {
-    public init() {}
-
+    public init () {}
+    
     public var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -22,8 +22,6 @@ public struct SearchRootView: View {
 }
 
 public struct SearchRootView_Previews: PreviewProvider {
-    public init() {}
-
     public static var previews: some View {
         SearchRootView()
     }

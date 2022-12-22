@@ -7,18 +7,23 @@
 
 import SwiftUI
 import Search
+import Explore
+import Setting
 
 public struct AppView: View {
     @State private var selectedTab: AppType.Tab = .search
-    
-    public init() {}
-    
+    public init () {}
+
     public var body: some View {
         TabView(selection: $selectedTab) {
             SearchRootView()
                 .tag(AppType.Tab.search.rawValue)
-            
+            ExploreRootView()
+                .tag(AppType.Tab.explore.rawValue)
+            SettingRootView()
+                .tag(AppType.Tab.setting.rawValue)
         }
+        .tabViewStyle(.page)
     }
 }
 
