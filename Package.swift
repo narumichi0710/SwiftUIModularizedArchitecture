@@ -9,11 +9,10 @@ let package = Package(
     ],
     products: [
         .library(name: "AppFeature", targets: ["AppFeature"]),
+        .library(name: "Tutorial", targets: ["Tutorial"]),
         .library(name: "Search", targets: ["Search"]),
         .library(name: "Explore", targets: ["Explore"]),
         .library(name: "Setting", targets: ["Setting"]),
-        .library(name: "Setting", targets: ["Setting"]),
-        .library(name: "Tutorial", targets: ["Tutorial"]),
         .library(name: "ApiClient", targets: ["ApiClient"]),
     ],
     dependencies: [
