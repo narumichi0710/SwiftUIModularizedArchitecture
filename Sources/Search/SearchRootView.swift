@@ -1,13 +1,13 @@
 //
-//  ContentView.swift
-//  App
+//  SearchRootView.swift
+//  
 //
-//  Created by Narumichi Kubo on 2022/12/21.
+//  Created by Narumichi Kubo on 2022/12/22.
 //
 
 import SwiftUI
 
-public struct ContentView: View {
+public struct SearchRootView: View {
     public init() {}
 
     public var body: some View {
@@ -21,10 +21,11 @@ public struct ContentView: View {
     }
 }
 
-public struct ContentView_Previews: PreviewProvider {
+public struct SearchRootView_Previews: PreviewProvider {
     public init() {}
 
     public static var previews: some View {
-        ContentView()
+        SearchRootView()
     }
 }
+
