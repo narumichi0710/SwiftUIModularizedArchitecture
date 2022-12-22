@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		528E44E129546AF3001DF2D3 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 528E44E029546AF3001DF2D3 /* AppFeature */; };
 		52FA20A1295319F200BE7022 /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FA20A0295319F200BE7022 /* MainApp.swift */; };
 		52FA20A5295319F300BE7022 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52FA20A4295319F300BE7022 /* Assets.xcassets */; };
 		52FA20A8295319F300BE7022 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52FA20A7295319F300BE7022 /* Preview Assets.xcassets */; };
@@ -33,6 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		528E44DD29546A8A001DF2D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		528E44DE29546AA2001DF2D3 /* SwiftUIModularizedArchitecture */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SwiftUIModularizedArchitecture; path = ..; sourceTree = "<group>"; };
 		52FA209D295319F200BE7022 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52FA20A0295319F200BE7022 /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
 		52FA20A4295319F300BE7022 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				528E44E129546AF3001DF2D3 /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,13 +73,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		528E44DF29546AF3001DF2D3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		52FA2094295319F200BE7022 = {
 			isa = PBXGroup;
 			children = (
+				528E44DE29546AA2001DF2D3 /* SwiftUIModularizedArchitecture */,
 				52FA209F295319F200BE7022 /* App */,
 				52FA20B0295319F300BE7022 /* AppTests */,
 				52FA20BA295319F300BE7022 /* AppUITests */,
 				52FA209E295319F200BE7022 /* Products */,
+				528E44DF29546AF3001DF2D3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,6 +105,7 @@
 		52FA209F295319F200BE7022 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				528E44DD29546A8A001DF2D3 /* Info.plist */,
 				52FA20A0295319F200BE7022 /* MainApp.swift */,
 				52FA20A4295319F300BE7022 /* Assets.xcassets */,
 				52FA20A6295319F300BE7022 /* Preview Content */,
@@ -140,6 +154,9 @@
 			dependencies = (
 			);
 			name = App;
+			packageProductDependencies = (
+				528E44E029546AF3001DF2D3 /* AppFeature */,
+			);
 			productName = App;
 			productReference = 52FA209D295319F200BE7022 /* App.app */;
 			productType = "com.apple.product-type.application";
@@ -416,6 +433,7 @@
 				DEVELOPMENT_TEAM = QP448RJ447;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -445,6 +463,7 @@
 				DEVELOPMENT_TEAM = QP448RJ447;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -579,6 +598,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		528E44E029546AF3001DF2D3 /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 52FA2095295319F200BE7022 /* Project object */;
 }
