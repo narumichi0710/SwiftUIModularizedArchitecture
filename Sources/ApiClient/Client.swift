@@ -15,7 +15,7 @@ protocol ApiClient {
     /// レスポンス
     associatedtype Response: Decodable
     /// URL
-    var baseURL: URL { get }
+    var baseURL: String { get }
     /// APIパス
     var path: String { get }
     /// HTTPメソッド
@@ -29,8 +29,8 @@ protocol ApiClient {
 }
 
 extension ApiClient {
-    var baseURL: URL {
-        return URL(string: "https://api.github.com")!
+    var baseURL: String {
+        return "https://api.github.com"
     }
     var headerFields: [String: String] {
         return ["Accept": "application/json"]
@@ -76,8 +76,8 @@ extension ApiClient {
     /// urlRequestの生成処理
     /// - Returns: URLRequest
     func getUrlRequest(body: Body? = nil) throws -> URLRequest {
-        // Pathの追加
-        let url = baseURL.appendingPathComponent(path)
+        // Pathの追加, URLの生成
+        let url = try baseURL.appending(path).asURL()
 
         // urlComponentの生成
         guard var component = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
@@ -128,14 +128,17 @@ enum HTTPMethodType: String {
 
 // MARK: APIError Localize
 enum APIError: Error, Equatable {
+    case invalidUrl
     case serverError
     case noResponse
     case other(String)
 
     var localize: String? {
         switch self {
+        case .invalidUrl:
+            return "無効なUrlです。少し時間を置いてからアクセスしてください。"
         case .serverError:
-            return "サーバーエラーが発生しました。"
+            return "サーバーエラーが発生しました。少し時間を置いてからアクセスしてください。"
         case .noResponse:
             return "サーバーからの応答がありません。少し時間を置いてからアクセスしてください。"
         default:
@@ -164,5 +167,14 @@ extension APIError {
             case documentationURL = "documentation_url"
             case errors, message
         }
+    }
+}
+
+private extension String {
+    func asURL() throws -> URL {
+        guard let url = URL(string: self) else {
+            throw APIError.invalidUrl
+        }
+        return url
     }
 }
