@@ -10,66 +10,88 @@ import SwiftUI
 public struct TutorialRootView: View {
     @Binding private var isPresentedHome: Bool
     @State private var currentStep: TutorialType.Step = .one
-
+    
     public init (
         isPresentedHome: Binding<Bool>
     ) {
         self._isPresentedHome = isPresentedHome
     }
-
+    
     
     public var body: some View {
-        VStack {
-            TabView {
-                stepOneContent
-                    .tag(TutorialType.Step.one)
-                stepTwoContent
-                    .tag(TutorialType.Step.two)
-                stepThreeContent
-                    .tag(TutorialType.Step.three)
-            }
-            .tabViewStyle(.page)
+        VStack(spacing: 8) {
+            header
+            content
         }
+        .padding(16)
     }
     
+    private var header: some View {
+        Group {
+            HStack {
+                Spacer()
+                Button {
+                    isPresentedHome.toggle()
+                } label: {
+                    Text("Skip")
+                }
+            }
+            Gauge(value: currentStep.toProgress) {}
+                .animation(.default, value: currentStep)
+        }
+        .padding(.bottom, 8)
+    }
+    
+    private var content: some View {
+        TabView(selection: $currentStep) {
+            stepOneContent
+                .tag(TutorialType.Step.one)
+            stepTwoContent
+                .tag(TutorialType.Step.two)
+            stepThreeContent
+                .tag(TutorialType.Step.three)
+        }
+        .tabViewStyle(.page)
+    }
+}
+
+extension TutorialRootView {
     private var stepOneContent: some View {
         VStack {
-            HStack {
-                Text("Step 1")
-                    .font(.title2)
-                Spacer()
-            }
+            title
             Spacer()
         }
     }
     private var stepTwoContent: some View {
         VStack {
-            HStack {
-                Text("Step 2")
-                    .font(.title2)
-                Spacer()
-            }
+            title
             Spacer()
         }
     }
     private var stepThreeContent: some View {
         VStack {
-            HStack {
-                Text("Step 3")
-                    .font(.title2)
-                Spacer()
-            }
+            title
             Spacer()
             Button {
                 isPresentedHome.toggle()
             } label: {
-                Text("Close")
+                Text("チュートリアルを終了する")
             }
+            .padding(16)
         }
     }
+    
+    private var title: some View {
+        HStack {
+            Divider()
+                .frame(width: 4)
+            Text("Step \(currentStep.rawValue + 1)")
+                .font(.title)
+            Spacer()
+        }
+    }
+    
 }
-
-
 
 
 public struct TutorialRootView_Previews: PreviewProvider {
