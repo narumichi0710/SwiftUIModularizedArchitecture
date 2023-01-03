@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct SearchRootView: View {
-    @State var text: String = ""
+    @StateObject private var store: SearchStore = .init()
     
     public init () {}
     
@@ -29,13 +29,16 @@ public struct SearchRootView: View {
                 Spacer()
             }
             // 検索項目
-            TextField("user name", text: $text)
-                .onSubmit(onSubmitText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.asciiCapable)
+            TextField("user name", text: Binding(
+                get: { store.state.searchText },
+                set: { store.dispatch(.onChangedText($0))})
+            )
+            .onSubmit { store.dispatch(.onSubmitted) }
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .keyboardType(.asciiCapable)
         }
         .padding()
-
+        
     }
     
     /// コンテント
