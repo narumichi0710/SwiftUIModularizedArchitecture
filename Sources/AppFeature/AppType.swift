@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum AppType {
-    enum Tab: Int, CaseIterable {
+public enum AppType {
+    public enum Tab: Int, CaseIterable {
         case search
         case explore
         case setting

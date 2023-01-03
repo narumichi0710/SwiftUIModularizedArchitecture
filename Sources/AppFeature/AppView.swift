@@ -12,13 +12,18 @@ import Setting
 import Tutorial
 
 public struct AppView: View {
-    @State private var selectedTab: AppType.Tab = .search
+    @StateObject private var appStore: AppStore = .init()
     @State private var isPresentedHome = false
     public init () {}
 
     public var body: some View {
         if isPresentedHome {
-            TabView(selection: $selectedTab) {
+            TabView(
+                selection: Binding(
+                    get: { appStore.state.selectedTab },
+                    set: { appStore.dispatch(.onChangeTab($0)) }
+                )
+            ) {
                 SearchRootView()
                     .tag(AppType.Tab.search)
                 ExploreRootView()
