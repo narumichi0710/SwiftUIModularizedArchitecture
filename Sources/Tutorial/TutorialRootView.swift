@@ -9,14 +9,11 @@ import SwiftUI
 
 public struct TutorialRootView: View {
     @Binding private var isPresentedHome: Bool
-    @State private var currentStep: TutorialType.Step = .one
+    @StateObject private var store: TutorialStore = .init()
     
-    public init (
-        isPresentedHome: Binding<Bool>
-    ) {
+    public init (isPresentedHome: Binding<Bool>) {
         self._isPresentedHome = isPresentedHome
     }
-    
     
     public var body: some View {
         VStack(spacing: 8) {
@@ -36,14 +33,17 @@ public struct TutorialRootView: View {
                     Text("Skip")
                 }
             }
-            Gauge(value: currentStep.toProgress) {}
-                .animation(.default, value: currentStep)
+            Gauge(value: store.state.currentStep.toProgress) {}
+                .animation(.default, value: store.state.currentStep)
         }
         .padding(.bottom, 8)
     }
     
     private var content: some View {
-        TabView(selection: $currentStep) {
+        TabView(selection: Binding(
+            get: { store.state.currentStep },
+            set: { store.dispatch(.onChangeTutorialStep($0)) }
+        )) {
             stepOneContent
                 .tag(TutorialType.Step.one)
             stepTwoContent
@@ -85,7 +85,7 @@ extension TutorialRootView {
         HStack {
             Divider()
                 .frame(width: 4)
-            Text("Step \(currentStep.rawValue + 1)")
+            Text("Step \(store.state.currentStep.rawValue + 1)")
                 .font(.title)
             Spacer()
         }
