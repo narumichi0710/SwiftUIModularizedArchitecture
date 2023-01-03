@@ -13,11 +13,10 @@ import Tutorial
 
 public struct AppView: View {
     @StateObject private var appStore: AppStore = .init()
-    @State private var isPresentedHome = false
     public init () {}
 
     public var body: some View {
-        if isPresentedHome {
+        if appStore.state.isPresentedHome {
             TabView(
                 selection: Binding(
                     get: { appStore.state.selectedTab },
@@ -33,7 +32,9 @@ public struct AppView: View {
             }
             .tabViewStyle(.page)
         } else {
-            TutorialRootView(isPresentedHome: $isPresentedHome)
+            TutorialRootView {
+                appStore.dispatch(.onFinish)
+            }
         }
     }
 }

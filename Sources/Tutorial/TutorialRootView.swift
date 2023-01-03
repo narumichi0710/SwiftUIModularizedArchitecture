@@ -8,11 +8,11 @@
 import SwiftUI
 
 public struct TutorialRootView: View {
-    @Binding private var isPresentedHome: Bool
+    private var onFinish: () -> Void
     @StateObject private var store: TutorialStore = .init()
     
-    public init (isPresentedHome: Binding<Bool>) {
-        self._isPresentedHome = isPresentedHome
+    public init (onFinish: @escaping () -> Void) {
+        self.onFinish = onFinish
     }
     
     public var body: some View {
@@ -28,7 +28,7 @@ public struct TutorialRootView: View {
             HStack {
                 Spacer()
                 Button {
-                    isPresentedHome.toggle()
+                    onFinish()
                 } label: {
                     Text("Skip")
                 }
@@ -73,7 +73,7 @@ extension TutorialRootView {
             title
             Spacer()
             Button {
-                isPresentedHome.toggle()
+                onFinish()
             } label: {
                 Text("チュートリアルを終了する")
             }
@@ -96,6 +96,6 @@ extension TutorialRootView {
 
 public struct TutorialRootView_Previews: PreviewProvider {
     public static var previews: some View {
-        TutorialRootView(isPresentedHome: .constant(true))
+        TutorialRootView{}
     }
 }
