@@ -8,8 +8,10 @@
 import Foundation
 import Combine
 
+
+
 // MARK: API共通処理を継承するためのプロトコル
-protocol ApiClient {
+public protocol ApiClient {
     /// ボディ
     associatedtype Body: Encodable
     /// レスポンス
@@ -22,63 +24,80 @@ protocol ApiClient {
     var method: HTTPMethodType { get }
     /// ヘッダーフィールド
     var headerFields: [String: String] { get }
-    /// パブリッシャー
-    var publisher: AnyPublisher<Response, APIError> { get }
     /// スケジューラー
     var scheduler: DispatchQueue { get }
 }
 
 extension ApiClient {
-    var baseURL: String {
+    public var baseURL: String {
         return "https://api.github.com"
     }
-    var headerFields: [String: String] {
+    public var headerFields: [String: String] {
         return ["Accept": "application/json"]
     }
-    var scheduler: DispatchQueue {
+    public var scheduler: DispatchQueue {
         .main
     }
 }
 
 
 extension ApiClient {
-
+    
     /// API呼び出し処理
-    func request(body: Body? = nil) -> AnyPublisher<Response, APIError> {
+    public func request(
+        body: Body? = nil,
+        success: @escaping (Response) -> Void,
+        failure: @escaping (APIError) -> Void,
+        completion: @escaping () -> Void = {}
+    ) -> AnyCancellable {
         let urlRequest = try! getUrlRequest(body: body)
-
-        return URLSession.shared
+        
+        return Deferred {
+            URLSession.shared
             // タスクの発行
-            .dataTaskPublisher(for: urlRequest)
+                .dataTaskPublisher(for: urlRequest)
             // エラーハンドリング
-            .tryMap { element -> Data in
-                // URLResponse→HTTPURLResponseにキャスト
-                guard let response = element.response as? HTTPURLResponse else {
-                    throw APIError.noResponse
+                .tryMap { element -> Data in
+                    // URLResponse→HTTPURLResponseにキャスト
+                    guard let response = element.response as? HTTPURLResponse else {
+                        throw APIError.noResponse
+                    }
+                    // responseからStatusコードを取得
+                    guard 200 ..< 300 ~= response.statusCode else {
+                        // responseからエラーログの取得
+                        let errorResponse = try? JSONDecoder().decode(APIError.Message.self, from: element.data)
+                        print("API Error: \(String(describing: errorResponse?.message)) ErrorCode: \(response.statusCode)")
+                        throw APIError.serverError
+                    }
+                    return element.data
                 }
-                // responseからStatusコードを取得
-                guard 200 ..< 300 ~= response.statusCode else {
-                    // responseからエラーログの取得
-                    let errorResponse = try? JSONDecoder().decode(APIError.Message.self, from: element.data)
-                    print("API Error: \(String(describing: errorResponse?.message)) ErrorCode: \(response.statusCode)")
-                    throw APIError.serverError
+                .decode(type: Response.self, decoder: JSONDecoder())
+                .mapError { error in
+                    error as? APIError ?? .serverError
                 }
-                return element.data
+            
+        }
+        .eraseToAnyPublisher()
+        .receive(on: scheduler)
+        .sink(receiveCompletion: { result in
+            switch result {
+                case .finished:
+                    break
+                case let .failure(e):
+                    if let apiError = e as? APIError {
+                        failure(APIError.serverError)
+                    }
             }
-            .decode(type: Response.self, decoder: JSONDecoder())
-            .mapError { error in
-                error as? APIError ?? .serverError
-            }
-            // publisherの型を抽象化（型消去）
-            .eraseToAnyPublisher()
+            completion()
+        }, receiveValue: success)
     }
-
+    
     /// urlRequestの生成処理
     /// - Returns: URLRequest
     func getUrlRequest(body: Body? = nil) throws -> URLRequest {
         // Pathの追加, URLの生成
         let url = try baseURL.appending(path).asURL()
-
+        
         // urlComponentの生成
         guard var component = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             print(url, "URLComponents Create Error: \(url)")
@@ -97,19 +116,19 @@ extension ApiClient {
             throw APIError.serverError
         }
         urlRequest.httpMethod = method.localize
-
+        
         return urlRequest
     }
 }
 
 // MARK: HTTPメソッドタイプ
-enum HTTPMethodType: String {
+public enum HTTPMethodType: String {
     case get
     case post
     case put
     case delete
     case paych
-
+    
     var localize: String {
         switch self {
         case .get:
@@ -127,12 +146,12 @@ enum HTTPMethodType: String {
 }
 
 // MARK: APIError Localize
-enum APIError: Error, Equatable {
+public enum APIError: Error, Equatable {
     case invalidUrl
     case serverError
     case noResponse
     case other(String)
-
+    
     var localize: String? {
         switch self {
         case .invalidUrl:
@@ -153,12 +172,12 @@ extension APIError {
         let documentationURL: URL
         let errors: Errors
         let message: String
-
+        
         struct Errors: Decodable, Equatable {
             let resource: String
             let field: String
             let code: String
-
+            
             private enum CodingKeys: String, CodingKey {
                 case resource, field, code
             }
