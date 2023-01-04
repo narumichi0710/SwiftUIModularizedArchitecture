@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SearchClient
 
 public struct SearchRootView: View {
     @StateObject private var store: SearchStore = .init()
@@ -46,8 +47,40 @@ public struct SearchRootView: View {
         ScrollView {
             VStack {
                 // 検索結果リスト
-                Text("検索ワードに一致するユーザーが存在しません。")
+                if let items = store.state.contents?.items {
+                    ScrollView {
+                        VStack {
+                            ForEach(items) { user in
+                                cell(user: user)
+                                Divider()
+                            }
+                        }
+                    }
+                } else {
+                    Text("検索ワードに一致するユーザーが存在しません。")
+                }
             }
+        }
+    }
+    
+    private func cell(user: SearchEntity.Response.User) -> some View {
+        HStack {
+            if let avatarUrl = user.avatarUrl {
+                AsyncImage(url: URL(string: avatarUrl)) { image in
+                    image.resizable()
+                } placeholder: {
+                    ProgressView()
+                }
+                .clipShape(Circle())
+                .frame(width: 50, height: 50)
+                .padding()
+            }
+            Spacer()
+            if let login = user.login {
+                Text(login)
+                    .padding()
+            }
+            Spacer()
         }
     }
 }

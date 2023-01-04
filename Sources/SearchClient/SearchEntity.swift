@@ -19,9 +19,19 @@ public enum SearchEntity {
     
     public enum Response {
         public struct Users: Decodable, Equatable {
-            var totalCount: Int
-            var incompleteResults: Bool
-            var items: [User]
+            public var totalCount: Int
+            public var incompleteResults: Bool
+            public var items: [User]
+            
+            public init(
+                totalCount: Int,
+                incompleteResults: Bool,
+                items: [User]
+            ) {
+                self.totalCount = totalCount
+                self.incompleteResults = incompleteResults
+                self.items = items
+            }
             
             public static let mockUsers = Users(
                 totalCount: 2,
@@ -49,9 +59,21 @@ public enum SearchEntity {
         
         public struct User: Decodable, Equatable, Identifiable {
             public var id = UUID()
-            var login: String
-            var avatarUrl: String
-            var reposUrl: String
+            public var login: String
+            public var avatarUrl: String
+            public var reposUrl: String
+            
+            public init(
+                id: UUID = UUID(),
+                login: String,
+                avatarUrl: String,
+                reposUrl: String
+            ) {
+                self.id = id
+                self.login = login
+                self.avatarUrl = avatarUrl
+                self.reposUrl = reposUrl
+            }
             
             private enum CodingKeys: String, CodingKey {
                 case login
