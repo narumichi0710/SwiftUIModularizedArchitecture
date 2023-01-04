@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import SearchClient
 
 final public class SearchStore: ObservableObject {
     
     @Published var state = State()
     struct State {
         fileprivate(set) var searchText = ""
+        fileprivate(set) var contents: SearchEntity.Response.Users?
     }
     
     enum Action {
@@ -25,7 +27,12 @@ final public class SearchStore: ObservableObject {
         case .onChangedText(let text):
             state.searchText = text
         case .onSubmitted:
-            break
+            SearchClient().fetchUsers(
+                body: .init(q: state.searchText)
+            ) { [weak self] response in
+                self?.state.contents = response
+            } onFailure: { error in
+            }
         }
     }
 }
