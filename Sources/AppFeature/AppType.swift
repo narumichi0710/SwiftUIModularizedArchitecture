@@ -9,8 +9,8 @@ import Foundation
 
 public enum AppType {
     public enum Tab: Int, CaseIterable {
+        case chat
         case search
-        case explore
         case setting
     }
 }

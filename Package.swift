@@ -8,8 +8,8 @@ let package = Package(
     products: [
         .library(name: "AppFeature", targets: ["AppFeature"]),
         .library(name: "Tutorial", targets: ["Tutorial"]),
+        .library(name: "Chat", targets: ["Chat"]),
         .library(name: "Search", targets: ["Search"]),
-        .library(name: "Explore", targets: ["Explore"]),
         .library(name: "Setting", targets: ["Setting"]),
         .library(name: "ApiClient", targets: ["ApiClient"]),
         .library(name: "SearchClient", targets: ["SearchClient"]),
@@ -19,13 +19,13 @@ let package = Package(
     targets: [
         .target(name: "AppFeature", dependencies: [
             "Tutorial",
+            "Chat",
             "Search",
-            "Explore",
             "Setting"
         ]),
         .target(name: "Tutorial", dependencies: []),
+        .target(name: "Chat", dependencies: []),
         .target(name: "Search", dependencies: ["SearchClient"]),
-        .target(name: "Explore", dependencies: []),
         .target(name: "Setting", dependencies: []),
         .target(name: "ApiClient", dependencies: []),
         .target(name: "SearchClient", dependencies: ["ApiClient"]),
