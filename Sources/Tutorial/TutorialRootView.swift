@@ -8,11 +8,10 @@
 import SwiftUI
 
 public struct TutorialRootView: View {
-    private var onFinish: () -> Void
-    @StateObject private var store: TutorialStore = .init()
+    @ObservedObject private var store: TutorialStore
     
-    public init (onFinish: @escaping () -> Void) {
-        self.onFinish = onFinish
+    public init(state: TutorialStore.State) {
+        self.store = .init(state: state)
     }
     
     public var body: some View {
@@ -28,7 +27,7 @@ public struct TutorialRootView: View {
             HStack {
                 Spacer()
                 Button {
-                    onFinish()
+                    store.dispatch(.toggle)
                 } label: {
                     Text("Skip")
                 }
@@ -42,7 +41,7 @@ public struct TutorialRootView: View {
     private var content: some View {
         TabView(selection: Binding(
             get: { store.state.currentStep },
-            set: { store.dispatch(.onChangeTutorialStep($0)) }
+            set: { store.dispatch(.update($0)) }
         )) {
             stepOneContent
                 .tag(TutorialType.Step.one)
@@ -73,7 +72,7 @@ extension TutorialRootView {
             title
             Spacer()
             Button {
-                onFinish()
+                store.dispatch(.toggle)
             } label: {
                 Text("チュートリアルを終了する")
             }
@@ -96,6 +95,6 @@ extension TutorialRootView {
 
 public struct TutorialRootView_Previews: PreviewProvider {
     public static var previews: some View {
-        TutorialRootView{}
+        TutorialRootView(state: .init())
     }
 }
